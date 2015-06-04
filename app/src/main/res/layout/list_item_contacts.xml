@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10sp"
+    android:background="@color/background_gray">
+
+    <ImageView
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:id="@+id/imgContactThumb"
+        android:background="#f00"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Name"
+            android:id="@+id/lblContactName"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+54 123456789"
+            android:id="@+id/lblContactPhone"
+            android:textSize="16sp"
+            android:textColor="@color/white_text"/>
+    </LinearLayout>
+</LinearLayout>
