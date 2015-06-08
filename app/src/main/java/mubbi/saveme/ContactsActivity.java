@@ -2,6 +2,9 @@ package mubbi.saveme;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,13 +29,21 @@ public class ContactsActivity extends ListActivity {
         //Set adapter
         ContactsAdapter adapter = new ContactsAdapter(this, contacts);
         setListAdapter(adapter);
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ContactsActivity.this, contacts.get(position).getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //Load contacts data and save in ArrayList
     private void getContactsFromPhone(){
-        Contact contact = new Contact("Pepe Argento", "+54 123456789");
+        Contact contact;
 
         for (int i = 0; i < 20; i++){
+            contact = new Contact("Pepe Argento " + i, "+54 123456789");
             contacts.add(contact);
         }
     }
