@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -69,8 +70,6 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
         }else{
             holder.selectedContact.setChecked(false);
         }
-
-
 
         return item;
     }

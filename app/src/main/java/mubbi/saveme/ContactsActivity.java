@@ -30,12 +30,6 @@ public class ContactsActivity extends ListActivity {
         ContactsAdapter adapter = new ContactsAdapter(this, contacts);
         setListAdapter(adapter);
 
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ContactsActivity.this, contacts.get(position).getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     //Load contacts data and save in ArrayList
