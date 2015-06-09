@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ContactsActivity">
+        <activity android:name=".contact_list.ContactsActivity">
         </activity>
     </application>
 

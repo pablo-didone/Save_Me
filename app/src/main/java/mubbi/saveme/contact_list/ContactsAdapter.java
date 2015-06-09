@@ -1,4 +1,4 @@
-package mubbi.saveme;
+package mubbi.saveme.contact_list;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,31 +8,23 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import mubbi.saveme.R;
 
 /**
  * Created by pdidone on 04/06/2015.
  */
-public class ContactsAdapter extends ArrayAdapter<Contact> {
+public class ContactsAdapter extends ArrayAdapter<ContactRow> {
 
     private Activity context;
-    private ArrayList<Row> data;
+    private ArrayList<ContactRow> data;
 
-    public ContactsAdapter(Activity context, ArrayList<Contact> data) {
-        super(context, R.layout.list_item_contacts, data);
+    public ContactsAdapter(Activity context, ArrayList<ContactRow> rowList){
+        super(context, R.layout.list_item_contacts, rowList);
         this.context = context;
-        this.data = new ArrayList<>();
-        adaptData(data);
-    }
-
-    private void  adaptData(ArrayList<Contact> dataIn){
-        Row row;
-        for (int i = 0; i < dataIn.size(); i++){
-            row = new Row(dataIn.get(i));
-            this.data.add(row);
-        }
+        this.data = rowList;
     }
 
     @Override
@@ -71,6 +63,19 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
             holder.selectedContact.setChecked(false);
         }
 
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.selectedContact.isChecked()){
+                    holder.selectedContact.setChecked(false);
+                    data.get(position).setChecked(false);
+                }else{
+                    holder.selectedContact.setChecked(true);
+                    data.get(position).setChecked(true);
+                }
+            }
+        });
+
         return item;
     }
 
@@ -80,30 +85,5 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
         CheckBox selectedContact;
     }
 
-    class Row{
-
-        Contact contact;
-        boolean checked;
-
-        public Row(Contact contact){
-            this.contact = contact;
-        }
-
-        public Contact getContact() {
-            return contact;
-        }
-
-        public void setContact(Contact contact) {
-            this.contact = contact;
-        }
-
-        public boolean isChecked() {
-            return checked;
-        }
-
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-        }
-    }
 
 }
