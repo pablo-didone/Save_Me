@@ -2,4 +2,5 @@
 <resources>
     <item name="background_gray" type="color">#FF323232</item>
     <item name="white_text" type="color">#FFEAEAEA</item>
+    <item name="red" type="color">#FFC11F11</item>
 </resources>

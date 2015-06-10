@@ -1,7 +1,9 @@
 package mubbi.saveme.contact_list;
 
 import android.app.ListActivity;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 
@@ -50,11 +52,50 @@ public class ContactsActivity extends ListActivity {
 
     //Load contacts data and save in ArrayList
     private void getContactsFromPhone(){
-        Contact contact;
 
-        for (int i = 0; i < 20; i++){
-            contact = new Contact("Pepe Argento " + i, "+54 123456789", null);
-            contacts.add(contact);
+        String[] projection = {
+                ContactsContract.Data._ID,
+                ContactsContract.Data.DISPLAY_NAME_PRIMARY,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.TYPE,
+                ContactsContract.Data.HAS_PHONE_NUMBER
+        };
+
+        String clause = ContactsContract.Data.MIMETYPE + "='" +
+                ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +
+                "' AND " + ContactsContract.CommonDataKinds.Phone.NUMBER + " IS NOT NULL";
+
+        String order_criteria = ContactsContract.Data.DISPLAY_NAME_PRIMARY + " ASC";
+
+        Cursor contactsCursor = getContentResolver().query(
+                ContactsContract.Data.CONTENT_URI,  //Contacts URI
+                projection,
+                clause,
+                null,
+                order_criteria
+        );
+
+        if(contactsCursor.moveToFirst()){
+            String contactName;
+            String contactPhone;
+            String hasPhoneNumber;
+
+            int columnName = contactsCursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME_PRIMARY);
+            int columnPhone = contactsCursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER);
+            int columnHasNumber = contactsCursor.getColumnIndex(ContactsContract.Data.HAS_PHONE_NUMBER);
+
+            Contact contact;
+
+            do{
+                contactName = contactsCursor.getString(columnName);
+                contactPhone = contactsCursor.getString(columnPhone);
+                hasPhoneNumber = contactsCursor.getString(columnHasNumber);
+
+                if (!hasPhoneNumber.equals("0")){
+                    contact = new Contact(contactName,contactPhone,null);
+                    contacts.add(contact);
+                }
+            } while (contactsCursor.moveToNext());
         }
     }
 

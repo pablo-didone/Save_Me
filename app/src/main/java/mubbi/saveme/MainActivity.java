@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import mubbi.saveme.configuration.ConfigurationActivity;
 import mubbi.saveme.contact_list.ContactsActivity;
 
 
@@ -20,7 +21,7 @@ public class MainActivity extends Activity {
         btnShowContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
+                Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
                 startActivity(intent);
             }
         });
