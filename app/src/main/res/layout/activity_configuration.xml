@@ -127,7 +127,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnAddContact"
                 android:src="@android:drawable/ic_input_add"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:layout_gravity="right"/>
         </LinearLayout>
 
         <ScrollView
@@ -152,14 +153,9 @@
         android:layout_weight="15">
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/done_button"
             android:text="@string/done"
             android:id="@+id/btnDoneConfig"
-            android:textColor="@color/white_text"
-            android:background="@color/red"
-            android:textSize="16sp"
-            android:layout_gravity="bottom"
             android:layout_marginTop="30sp"/>
     </LinearLayout>
 

@@ -8,8 +8,8 @@ import android.os.Parcelable;
  */
 public class ContactRow implements Parcelable{
 
-    Contact contact;
-    boolean checked;
+    private Contact contact;
+    private boolean checked;
 
     public static final Parcelable.Creator<ContactRow> CREATOR = new Creator<ContactRow>() {
 

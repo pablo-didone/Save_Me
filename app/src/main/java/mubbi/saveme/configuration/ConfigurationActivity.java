@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import mubbi.saveme.R;
+import mubbi.saveme.contact_list.Contact;
 import mubbi.saveme.contact_list.ContactsActivity;
 
 /**
@@ -17,17 +22,27 @@ import mubbi.saveme.contact_list.ContactsActivity;
  */
 public class ConfigurationActivity extends Activity {
 
+    ArrayList<Contact> contacts;
+
+
+
+    private final int PICK_CONTACTS_REQUEST = 1;
+
     private Spinner spnDelay;
     private Spinner spnFrecuency;
     private Spinner spnTotalTime;
     private Spinner spnAdvice;
     private ImageButton btnAddContact;
     private ArrayAdapter<String> spinnerAdapter;
+    private ListView lstContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
+
+        //ListView
+        lstContacts = (ListView)findViewById(R.id.lstSelectedContacts);
 
         //Spinner Delay
         spnDelay = (Spinner)findViewById(R.id.spnDelay);
@@ -78,8 +93,21 @@ public class ConfigurationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ConfigurationActivity.this, ContactsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, PICK_CONTACTS_REQUEST);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICK_CONTACTS_REQUEST && resultCode == RESULT_OK){
+            contacts = data.getParcelableArrayListExtra("CONTACT_LIST");
+            loadSelectedContacts();
+        }
+    }
+
+    private void loadSelectedContacts(){
+        SelectedContactsAdapter adapter = new SelectedContactsAdapter(this, contacts);
+        lstContacts.setAdapter(adapter);
     }
 }

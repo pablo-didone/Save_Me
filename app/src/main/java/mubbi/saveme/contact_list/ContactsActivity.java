@@ -1,9 +1,13 @@
 package mubbi.saveme.contact_list;
 
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -40,6 +44,24 @@ public class ContactsActivity extends ListActivity {
         //Set adapter
         adapter = new ContactsAdapter(this, contactRows);
         setListAdapter(adapter);
+
+        //Button return contacts
+        Button btnReturnContacts = (Button)findViewById(R.id.btnReturnContactList);
+        btnReturnContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.clear();
+                for (int i = 0; i < contactRows.size(); i++){
+                    if (contactRows.get(i).isChecked()){
+                        contacts.add(contactRows.get(i).getContact());
+                    }
+                }
+                Intent i = new Intent();
+                i.putParcelableArrayListExtra("CONTACT_LIST",contacts);
+                setResult(Activity.RESULT_OK,i);
+                finish();
+            }
+        });
 
     }
 

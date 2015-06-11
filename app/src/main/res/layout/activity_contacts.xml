@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_gray">
 
     <ListView
+        android:background="@color/white_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@android:id/list" />
+        android:id="@android:id/list"
+        android:layout_weight="1"
+        android:layout_marginBottom="20sp"/>
+
+    <Button
+        style="@style/done_button"
+        android:text="@string/done"
+        android:id="@+id/btnReturnContactList"/>
 
 </LinearLayout>

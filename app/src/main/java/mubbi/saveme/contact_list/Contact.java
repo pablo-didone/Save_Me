@@ -15,8 +15,8 @@ public class Contact implements Parcelable{
     public static final Creator<Contact> CREATOR = new Creator<Contact>(){
 
         @Override
-        public Contact createFromParcel(Parcel source) {
-            return null;
+        public Contact createFromParcel(Parcel parcel) {
+            return new Contact(parcel);
         }
 
         @Override
@@ -59,6 +59,14 @@ public class Contact implements Parcelable{
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 
     @Override
