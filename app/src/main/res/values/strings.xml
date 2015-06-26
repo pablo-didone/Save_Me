@@ -15,5 +15,8 @@
     <string name="do_nothing">No hacer nada</string>
     <string name="send_message_to">Enviar mensajes a</string>
     <string name="done">Hecho</string>
+    <string name="minutes">Minutos</string>
+    <string name="title_required">El campo titulo es obligatorio</string>
+    <string name="contacts_required">Debe seleccionar al menos un destinatario</string>
 
 </resources>

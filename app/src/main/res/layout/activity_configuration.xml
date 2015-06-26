@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0sp"
-        android:layout_weight="10">
+        android:layout_weight="20">
 
         <TextView
             android:text="@string/event_title"
@@ -19,91 +19,33 @@
         <EditText
             style="@style/custom_edit_text"
             android:id="@+id/txtEventTitle"
-            android:hint="@string/title_example"/>
-    </LinearLayout>
+            android:hint="@string/title_example"
+            android:layout_marginBottom="20sp"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="0sp"
-        android:layout_weight="20" >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/custom_font"
-                    android:text="@string/delay"
-                    android:layout_gravity="center"/>
-
-                <Spinner
-                    android:id="@+id/spnDelay"
-                    style="@style/custom_spinner"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/custom_font"
-                    android:text="@string/frecuency"
-                    android:layout_gravity="center"/>
-
-                <Spinner
-                    android:id="@+id/spnFrecuency"
-                    style="@style/custom_spinner" />
-            </LinearLayout>
-        </LinearLayout>
+        <TextView
+            style="@style/custom_font"
+            android:text="@string/delay"
+            android:id="@+id/textView" />
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10sp">
+            android:layout_gravity="center_horizontal">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1">
+            <Spinner
+                style="@style/custom_spinner"
+                android:id="@+id/spnDelay" />
 
-                <TextView
-                    style="@style/custom_font"
-                    android:text="@string/total_time"
-                    android:layout_gravity="center"/>
+            <TextView
+                android:layout_marginLeft="15sp"
+                style="@style/custom_font"
+                android:id="@+id/editText"
+                android:text="@string/minutes"/>
 
-                <Spinner
-                    android:id="@+id/spnTotalTime"
-                    style="@style/custom_spinner"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    style="@style/custom_font"
-                    android:text="@string/advice"
-                    android:layout_gravity="center"/>
-
-                <Spinner
-                    android:id="@+id/spnAdvice"
-                    style="@style/custom_spinner" />
-            </LinearLayout>
         </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -131,18 +73,12 @@
                 android:layout_gravity="right"/>
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
+        <ListView
+            android:layout_width="wrap_content"
             android:layout_height="0sp"
-            android:layout_weight="1"
-            android:id="@+id/scrollView"
-            android:background="@color/white_text">
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lstSelectedContacts" />
-        </ScrollView>
+            android:layout_weight="20"
+            android:id="@+id/lstSelectedContacts"
+            android:background="@color/white_text"/>
 
     </LinearLayout>
 

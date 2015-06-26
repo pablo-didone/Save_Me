@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,8 +35,9 @@ public class ContactsActivity extends ListActivity {
             getContactsFromPhone();
 
             //Convert to
+            ArrayList<String> selected = getIntent().getStringArrayListExtra("SELECTED");
             contactRows = new ArrayList<>();
-            convertToRowList(contacts);
+            convertToRowList(contacts, selected);
         }
 
         //Set layout
@@ -98,10 +100,12 @@ public class ContactsActivity extends ListActivity {
         );
 
         if(contactsCursor.moveToFirst()){
+            String id;
             String contactName;
             String contactPhone;
             String hasPhoneNumber;
 
+            int columnId = contactsCursor.getColumnIndex(ContactsContract.Data._ID);
             int columnName = contactsCursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME_PRIMARY);
             int columnPhone = contactsCursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER);
             int columnHasNumber = contactsCursor.getColumnIndex(ContactsContract.Data.HAS_PHONE_NUMBER);
@@ -109,12 +113,13 @@ public class ContactsActivity extends ListActivity {
             Contact contact;
 
             do{
+                id = contactsCursor.getString(columnId);
                 contactName = contactsCursor.getString(columnName);
                 contactPhone = contactsCursor.getString(columnPhone);
                 hasPhoneNumber = contactsCursor.getString(columnHasNumber);
 
                 if (!hasPhoneNumber.equals("0")){
-                    contact = new Contact(contactName,contactPhone,null);
+                    contact = new Contact(id,contactName,contactPhone,null);
                     contacts.add(contact);
                 }
             } while (contactsCursor.moveToNext());
@@ -122,10 +127,19 @@ public class ContactsActivity extends ListActivity {
     }
 
     //Set contact list to contact row (with check)
-    private void convertToRowList(ArrayList<Contact> dataIn){
+    private void convertToRowList(ArrayList<Contact> dataIn, ArrayList<String> selected){
         ContactRow row;
+
         for (int i = 0; i < dataIn.size(); i++){
             row = new ContactRow(dataIn.get(i));
+            if(selected != null){
+                for (int j = 0; j < selected.size(); j++){
+                    if (row.getContact().getId().equals(selected.get(j))){
+                        row.setChecked(true);
+                        break;
+                    }
+                }
+            }
             this.contactRows.add(row);
         }
     }

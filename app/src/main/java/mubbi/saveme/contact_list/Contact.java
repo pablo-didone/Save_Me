@@ -8,6 +8,7 @@ import android.os.Parcelable;
  */
 public class Contact implements Parcelable{
 
+    private String id;
     private String name;
     private String phone;
     private String imagePath;
@@ -26,40 +27,32 @@ public class Contact implements Parcelable{
     };
 
     private Contact(Parcel in){
+        this.id = in.readString();
         this.name = in.readString();
         this.phone = in.readString();
         this.imagePath = in.readString();
     }
 
-    public Contact(String name, String phone, String image) {
+    public Contact(String id, String name, String phone, String image) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.imagePath = image;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
 
     @Override
     public String toString() {
@@ -76,6 +69,7 @@ public class Contact implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeString(this.getPhone());
         dest.writeString(this.imagePath);

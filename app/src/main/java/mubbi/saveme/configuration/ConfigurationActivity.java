@@ -2,10 +2,11 @@ package mubbi.saveme.configuration;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -22,24 +23,24 @@ import mubbi.saveme.contact_list.ContactsActivity;
  */
 public class ConfigurationActivity extends Activity {
 
-    ArrayList<Contact> contacts;
-
-
+    private ArrayList<Contact> contacts;
 
     private final int PICK_CONTACTS_REQUEST = 1;
 
+    private EditText txtTitle;
     private Spinner spnDelay;
-    private Spinner spnFrecuency;
-    private Spinner spnTotalTime;
-    private Spinner spnAdvice;
     private ImageButton btnAddContact;
     private ArrayAdapter<String> spinnerAdapter;
     private ListView lstContacts;
+    private Button btnSaveAdvice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
+
+        //TextBox advice title
+        txtTitle = (EditText)findViewById(R.id.txtEventTitle);
 
         //ListView
         lstContacts = (ListView)findViewById(R.id.lstSelectedContacts);
@@ -54,46 +55,33 @@ public class ConfigurationActivity extends Activity {
         spnDelay.setAdapter(spinnerAdapter);
 
 
-        //Spinner frecuency
-        spnFrecuency = (Spinner)findViewById(R.id.spnFrecuency);
-        final String[] frecuencyData = new String[]{"1","3","5","10"};
-
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, frecuencyData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spnFrecuency.setAdapter(spinnerAdapter);
-
-        //Spinner Total Time
-        spnTotalTime = (Spinner)findViewById(R.id.spnTotalTime);
-
-        final String[] totalTimeData = new String[]{"5","10","30"};
-
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, totalTimeData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spnTotalTime.setAdapter(spinnerAdapter);
-
-        //Spinner Advice
-        spnAdvice = (Spinner)findViewById(R.id.spnAdvice);
-
-        final String[] AdviceData = new String[]{
-                getResources().getString(R.string.vibrate),
-                getResources().getString(R.string.sound),
-                getResources().getString(R.string.do_nothing)
-        };
-
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, AdviceData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spnAdvice.setAdapter(spinnerAdapter);
-
         //Button add contact
         btnAddContact = (ImageButton)findViewById(R.id.btnAddContact);
         btnAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(ConfigurationActivity.this, ContactsActivity.class);
+
+                //Pass selected contacts yet
+                if (contacts != null && contacts.size() > 0){
+                    ArrayList<String> selected = new ArrayList<>();
+                    for(int i = 0; i < contacts.size(); i++){
+                        selected.add(contacts.get(i).getId());
+                    }
+                    intent.putStringArrayListExtra("SELECTED", selected);
+                }
+
                 startActivityForResult(intent, PICK_CONTACTS_REQUEST);
+            }
+        });
+
+        //Button save advice
+        btnSaveAdvice = (Button)findViewById(R.id.btnDoneConfig);
+        btnSaveAdvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveAdvice();
             }
         });
     }
@@ -109,5 +97,41 @@ public class ConfigurationActivity extends Activity {
     private void loadSelectedContacts(){
         SelectedContactsAdapter adapter = new SelectedContactsAdapter(this, contacts);
         lstContacts.setAdapter(adapter);
+    }
+
+    private void saveAdvice(){
+        String title;
+        int delay;
+
+        //Validate TextView Title
+        if (!txtTitle.getText().toString().equals("")){
+            title = txtTitle.getText().toString();
+        }else{
+            showError(getResources().getString(R.string.title_required));
+            return;
+        }
+
+        //Validate contacts list
+        if (contacts == null){
+            showError(getResources().getString(R.string.contacts_required));
+            return;
+        }else if (contacts.size() < 1){
+            showError(getResources().getString(R.string.contacts_required));
+            return;
+        }
+
+        delay = Integer.parseInt(spnDelay.getSelectedItem().toString());
+
+        Advice advice = new Advice(title,delay,contacts);
+
+        Intent i = new Intent();
+        i.putExtra("ADVICE", advice);
+        setResult(Activity.RESULT_OK,i);
+        finish();
+    }
+
+    private void showError(String errorText){
+        Toast toast = Toast.makeText(this, errorText, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
