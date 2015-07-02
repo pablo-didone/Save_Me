@@ -2,8 +2,13 @@ package mubbi.saveme.configuration;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +38,7 @@ public class ConfigurationActivity extends Activity {
     private ArrayAdapter<String> spinnerAdapter;
     private ListView lstContacts;
     private Button btnSaveAdvice;
+    SelectedContactsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class ConfigurationActivity extends Activity {
 
         //ListView
         lstContacts = (ListView)findViewById(R.id.lstSelectedContacts);
+        registerForContextMenu(lstContacts);
 
         //Spinner Delay
         spnDelay = (Spinner)findViewById(R.id.spnDelay);
@@ -94,8 +101,31 @@ public class ConfigurationActivity extends Activity {
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_ctx_contacts, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.ctxDeleteContact:
+                contacts.remove(contacts.get(info.position));
+                adapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     private void loadSelectedContacts(){
-        SelectedContactsAdapter adapter = new SelectedContactsAdapter(this, contacts);
+        adapter = new SelectedContactsAdapter(this, contacts);
         lstContacts.setAdapter(adapter);
     }
 
@@ -107,30 +137,45 @@ public class ConfigurationActivity extends Activity {
         if (!txtTitle.getText().toString().equals("")){
             title = txtTitle.getText().toString();
         }else{
-            showError(getResources().getString(R.string.title_required));
+            showMessage(getResources().getString(R.string.title_required));
             return;
         }
 
         //Validate contacts list
         if (contacts == null){
-            showError(getResources().getString(R.string.contacts_required));
+            showMessage(getResources().getString(R.string.contacts_required));
             return;
         }else if (contacts.size() < 1){
-            showError(getResources().getString(R.string.contacts_required));
+            showMessage(getResources().getString(R.string.contacts_required));
             return;
         }
 
         delay = Integer.parseInt(spnDelay.getSelectedItem().toString());
 
-        Advice advice = new Advice(title,delay,contacts);
+        //Format contacts to save
+        String contactsString = "";
+        for (int i = 0; i < contacts.size(); i++){
+            contactsString += contacts.get(i).getName() + "/" + contacts.get(i).getPhone() + ";";
+        }
 
-        Intent i = new Intent();
-        i.putExtra("ADVICE", advice);
-        setResult(Activity.RESULT_OK,i);
-        finish();
+        //Save in data base
+        AdvicesSqLiteHelper sqLiteHelper = new AdvicesSqLiteHelper(this, "DBAdvices", null, 1);
+        SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
+
+        if(db != null){
+            String sql = "INSERT INTO advices (title, delay, contacts) VALUES ('" + title + "',"
+                    + delay + ",'" + contactsString + "')";
+
+            db.execSQL(sql);
+            db.close();
+            showMessage(getResources().getString(R.string.saved_successfully));
+        }else{
+            showMessage(getResources().getString(R.string.save_failed));
+        }
+        ConfigurationActivity.this.finish();
     }
 
-    private void showError(String errorText){
+    private void showMessage(String errorText){
         Toast toast = Toast.makeText(this, errorText, Toast.LENGTH_LONG);
         toast.show();
     }

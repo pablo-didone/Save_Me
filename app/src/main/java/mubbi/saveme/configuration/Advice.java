@@ -30,7 +30,8 @@ public class Advice implements Parcelable{
         }
     };
 
-    public Advice(String title, int delay, ArrayList<Contact> contactList) {
+    public Advice(int id, String title, int delay, ArrayList<Contact> contactList) {
+        this.id = id;
         this.title = title;
         this.delay = delay;
         this.contactList = contactList;
@@ -42,6 +43,18 @@ public class Advice implements Parcelable{
         this.delay = in.readInt();
         contactList = new ArrayList<>();
         in.readTypedList(contactList, Contact.CREATOR);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getDelay() {
+        return delay;
     }
 
     @Override

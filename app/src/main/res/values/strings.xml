@@ -18,5 +18,9 @@
     <string name="minutes">Minutos</string>
     <string name="title_required">El campo titulo es obligatorio</string>
     <string name="contacts_required">Debe seleccionar al menos un destinatario</string>
+    <string name="new_advice">Nuevo aviso</string>
+    <string name="save_failed">No se pudo crear el aviso</string>
+    <string name="saved_successfully">Guardado correctamente</string>
+    <string name="delete">Borrar</string>
 
 </resources>
