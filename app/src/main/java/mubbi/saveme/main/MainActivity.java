@@ -16,6 +16,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import mubbi.saveme.R;
+import mubbi.saveme.alarm.AlarmActivity;
 import mubbi.saveme.configuration.Advice;
 import mubbi.saveme.configuration.AdvicesSqLiteHelper;
 import mubbi.saveme.configuration.ConfigurationActivity;
@@ -53,7 +54,9 @@ public class MainActivity extends Activity {
         lstAdvices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+                Intent intent = new Intent(MainActivity.this, AlarmActivity.class);
+                intent.putExtra("ADVICE", adviceList.get(position));
+                startActivity(intent);
             }
         });
     }

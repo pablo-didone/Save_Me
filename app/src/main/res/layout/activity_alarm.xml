@@ -18,15 +18,19 @@
     <TextView
         android:layout_marginTop="20sp"
         style="@style/custom_font"
-        android:text="New Text"
+        android:text="@string/send_to"
         android:id="@+id/lblAdviceContacts"
         android:textSize="18sp"/>
 
     <ListView
         android:layout_marginTop="15sp"
         android:layout_width="match_parent"
-        android:layout_height="346dp"
-        android:id="@+id/lstContacts"
-        android:layout_weight="0.13" />
+        android:layout_height="261dp"
+        android:id="@+id/lstAlarmContacts" />
+
+    <TextView
+        style="@style/custom_font"
+        android:text="@string/delay"
+        android:id="@+id/lblAlarmDelay" />
 
 </LinearLayout>

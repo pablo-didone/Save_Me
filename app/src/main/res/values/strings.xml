@@ -22,5 +22,6 @@
     <string name="save_failed">No se pudo crear el aviso</string>
     <string name="saved_successfully">Guardado correctamente</string>
     <string name="delete">Borrar</string>
+    <string name="send_to">Enviar a</string>
 
 </resources>

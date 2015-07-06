@@ -26,6 +26,10 @@
             android:name=".configuration.ConfigurationActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
+        <activity
+            android:name=".alarm.AlarmActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
     </application>
 
 </manifest>

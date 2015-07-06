@@ -57,6 +57,10 @@ public class Advice implements Parcelable{
         return delay;
     }
 
+    public ArrayList<Contact> getContactList() {
+        return contactList;
+    }
+
     @Override
     public int describeContents() {
         return 0;
